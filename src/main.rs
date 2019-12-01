@@ -1,30 +1,40 @@
 mod scene;
 mod rendering;
 mod point;
+mod vector;
+mod ray;
+mod color;
 
 use rendering::{render};
-use image::{DynamicImage};
 use point::Point;
-use scene::{Sphere, Scene, Color};
+use scene::{Sphere, Scene};
 use std::path::Path;
+use color::Color;
 
 fn main() {
     let scene = Scene {
         width: 800,
         height: 600,
         fov: 90.0,
-        sphere: Sphere {
-            center: Point {
-                x: 0.0,
-                y: 0.0,
-                z: -5.0,
-            },
-            radius: 1.0,
-            color: Color {
-                red: 0.4,
-                green: 1.0,
-                blue: 0.4,
-            },
+        elements: vec![
+            Sphere {
+                center: Point {
+                    x: 0.0,
+                    y: 0.0,
+                    z: -5.0,
+                },
+                radius: 1.0,
+                color: Color {
+                    red: 0.4,
+                    green: 1.0,
+                    blue: 0.4,
+                },
+            }
+        ],
+        clear_color: Color {
+            red: 0.0,
+            green: 0.0,
+            blue: 0.0,
         },
     };
 

@@ -1,11 +1,6 @@
 use crate::point::{Point};
-
-#[derive(Debug)]
-pub struct Color {
-    pub red: f32,
-    pub green: f32,
-    pub blue: f32
-}
+use crate::color::{Color};
+use std::vec::Vec;
 
 #[derive(Debug)]
 pub struct Sphere {
@@ -19,5 +14,6 @@ pub struct Scene {
     pub width: u32,
     pub height: u32,
     pub fov: f64,
-    pub sphere: Sphere
+    pub elements: Vec<Sphere>,
+    pub clear_color: Color
 }
