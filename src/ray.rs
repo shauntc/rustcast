@@ -9,20 +9,29 @@ pub struct Ray {
 }
 
 pub trait Intersect {
-    fn intersects(&self, ray: &Ray) -> bool;
+    fn intersects(&self, ray: &Ray) -> Option<f64>;
 }
 
 impl Intersect for Sphere {
-    fn intersects(&self, ray: &Ray) -> bool {
-        //Create a line segment between the ray origin and the center of the sphere
+    fn intersects(&self, ray: &Ray) -> Option<f64> {
         let l: Vector3 = self.center - ray.origin;
-        //Use l as a hypotenuse and find the length of the adjacent side
-        let adj2 = l.dot(ray.direction);
-        //Find the length-squared of the opposite side
-        //This is equivalent to (but faster than) (l.length() * l.length()) - (adj2 * adj2)
-        let d2 = l.dot(l) - (adj2 * adj2);
-        //If that length-squared is less than radius squared, the ray intersects the sphere
-        return d2 < (self.radius * self.radius);
+        let r_sq = self.radius * self.radius;
+        let adj_sq = l.dot(ray.direction);
+        let d_sq = l.dot(l) - (adj_sq * adj_sq);
+        if d_sq > r_sq {
+            // If the ray doesn't pass through the sphere we return nothing
+            return None;
+        }
+        let adjacent = adj_sq.sqrt();
+        let depth = (r_sq - d_sq).sqrt();
+        let i_one = adjacent - depth;
+        let i_two = adjacent + depth;
+        if i_one < 0.0 && i_two < 0.0 {
+            return None;
+        }
+        let distance = if i_one < i_two { i_one } else { i_two };
+
+        return Some(distance);
     }
 }
 
