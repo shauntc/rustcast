@@ -1,7 +1,7 @@
 use image::{DynamicImage, GenericImage};
 
 use crate::scene::{Scene};
-use crate::ray::{Ray, Intersect};
+use crate::ray::{Ray};
 
 pub fn render(scene: &Scene) -> DynamicImage {
     let mut image = DynamicImage::new_rgb8(scene.width, scene.height);
@@ -9,9 +9,9 @@ pub fn render(scene: &Scene) -> DynamicImage {
         for y in 0..scene.height {
             let ray = Ray::create_prime(x, y, scene);
 
-            let sphere = &scene.elements[0];
-            if sphere.intersects(&ray) {
-                image.put_pixel(x, y, sphere.color.to_rgba());
+            let trace_result = scene.trace(&ray);
+            if let Some(intersection) = trace_result {
+                image.put_pixel(x, y, intersection.element.color.to_rgba());
             } else {
                 image.put_pixel(x, y, scene.clear_color.to_rgba());
             }

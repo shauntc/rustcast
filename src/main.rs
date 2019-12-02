@@ -18,24 +18,42 @@ fn main() {
         fov: 90.0,
         elements: vec![
             Sphere {
-                center: Point {
-                    x: 0.0,
-                    y: 0.0,
-                    z: -5.0,
-                },
+                center: Point {x: -1.0, y: 1.0, z: -5.0},
                 radius: 1.0,
-                color: Color {
-                    red: 0.4,
-                    green: 1.0,
-                    blue: 0.4,
-                },
+                color: Color {red: 1.0, green: 0.0, blue: 0.0},
+            },
+            Sphere {
+                center: Point {x: 1.0, y: 1.0, z: -5.0},
+                radius: 1.0,
+                color: Color {red: 0.0, green: 1.0, blue: 0.0},
+            },
+            Sphere {
+                center: Point {x: -1.0, y: -1.0, z: -5.0},
+                radius: 1.0,
+                color: Color {red: 0.0, green: 0.0, blue: 1.0},
+            },
+            Sphere {
+                center: Point {x: 1.0, y: -1.0, z: -5.0},
+                radius: 1.0,
+                color: Color {red: 1.0, green: 1.0, blue: 1.0},
+            },
+            Sphere {
+                center: Point {x: 1.0, y: 3.0, z: -5.0},
+                radius: 0.5,
+                color: Color {red: 0.5, green: 0.0, blue: 0.4}
+            },
+            Sphere {
+                center: Point {x: -2.0, y: -1.0, z: -5.0},
+                radius: 2.0,
+                color: Color {red: 0.0, green: 0.0, blue: 0.4}
+            },
+            Sphere {
+                center: Point {x: 0.0, y: 0.0, z: -3.0},
+                radius: 0.1,
+                color: Color {red: 1.0, green: 0.0, blue: 0.0}
             }
         ],
-        clear_color: Color {
-            red: 0.0,
-            green: 0.0,
-            blue: 0.0,
-        },
+        clear_color: Color {red: 0.0, green: 0.0, blue: 0.0},
     };
 
     let img = render(&scene);

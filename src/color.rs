@@ -24,8 +24,8 @@ impl Color {
     pub fn to_rgba(&self) -> Rgba<u8> {
         Rgba ([
             self.red.to_u8(), 
-            self.blue.to_u8(),
             self.green.to_u8(),
+            self.blue.to_u8(),
             0
         ])
     }

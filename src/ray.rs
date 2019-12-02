@@ -16,16 +16,15 @@ impl Intersect for Sphere {
     fn intersects(&self, ray: &Ray) -> Option<f64> {
         let l: Vector3 = self.center - ray.origin;
         let r_sq = self.radius * self.radius;
-        let adj_sq = l.dot(ray.direction);
-        let d_sq = l.dot(l) - (adj_sq * adj_sq);
+        let adj = l.dot(ray.direction);
+        let d_sq = l.dot(l) - (adj * adj);
         if d_sq > r_sq {
             // If the ray doesn't pass through the sphere we return nothing
             return None;
         }
-        let adjacent = adj_sq.sqrt();
         let depth = (r_sq - d_sq).sqrt();
-        let i_one = adjacent - depth;
-        let i_two = adjacent + depth;
+        let i_one = adj - depth;
+        let i_two = adj + depth;
         if i_one < 0.0 && i_two < 0.0 {
             return None;
         }
