@@ -53,7 +53,7 @@ pub struct Scene {
     pub elements: Vec<Element>,
     pub clear_color: Color,
     pub shadow_bias: f64,
-    pub light: Light
+    pub lights: Vec<Light>
 }
 
 pub struct Intersection<'a> {
@@ -76,6 +76,7 @@ impl Scene {
 #[cfg(test)]
 pub mod tests {
     use super::*;
+    use super::light::DirectionalLight;
 
     pub fn test_scene() -> Scene {
         return Scene {
@@ -94,11 +95,13 @@ pub mod tests {
             ],
             clear_color: Color {red: 0.0, green: 0.0, blue: 0.0},
             shadow_bias: 1e-12,
-            light: Light {
-                direction: Vector3 {x: -1.0, y:-1.0, z: 0.0},
-                color: Color {red: 1.0, green: 1.0, blue: 1.0},
-                intensity: 0.4
-            }
+            lights: vec![
+                Light::Directional( DirectionalLight {
+                    direction: Vector3 {x: -1.0, y:-1.0, z: 0.0},
+                    color: Color {red: 1.0, green: 1.0, blue: 1.0},
+                    intensity: 0.4
+                })
+            ]
         };
     }
 }

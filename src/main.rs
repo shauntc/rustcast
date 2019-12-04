@@ -10,7 +10,7 @@ use rendering::{render};
 use point::Point;
 use scene::{Scene, Element};
 use scene::sphere::Sphere;
-use scene::light::Light;
+use scene::light::{Light, DirectionalLight, SphericalLight};
 use material::Material;
 use vector::Vector3;
 use scene::plane::Plane;
@@ -27,12 +27,12 @@ fn main() {
                 origin: Point {x: 0.0, y:-2.0, z: 0.0},
                 normal: Vector3 {x: 0.0, y: -1.0, z: 0.0},
                 material: Material {
-                    color: Color {red: 0.5, green: 0.01, blue: 0.8},
-                    albedo: 0.02
+                    color: Color {red: 0.2, green: 0.01, blue: 0.8},
+                    albedo: 0.12
                 }
             }), 
             Element::Sphere(Sphere {
-                center: Point {x: -1.0, y: 1.0, z: -2.0},
+                center: Point {x: -1.0, y: 1.0, z: -3.0},
                 radius: 1.0,
                 material: Material {
                     color: Color {red: 1.0, green: 0.01, blue: 0.01},
@@ -58,11 +58,18 @@ fn main() {
         ],
         clear_color: Color {red: 0.0, green: 0.0, blue: 0.0},
         shadow_bias: 1e-12,
-        light: Light {
-            direction: Vector3 {x: -1.0, y:-1.0, z: -1.5},
-            color: Color {red: 1.0, green: 1.0, blue: 1.0},
-            intensity: 50.0
-        }
+        lights: vec![
+            Light::Directional(DirectionalLight {
+                direction: Vector3 {x: -1.0, y:-1.0, z: -1.5},
+                color: Color {red: 1.0, green: 1.0, blue: 1.0},
+                intensity: 5.0
+            }),
+            Light::Spherical(SphericalLight {
+                position: Point {x: 0.0, y:0.0, z: -3.0},
+                color: Color {red: 1.0, green: 1.0, blue: 1.0},
+                intensity: 1000.0
+            })
+        ]
     };
 
     let img = render(&scene);

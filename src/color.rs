@@ -1,5 +1,5 @@
 use image::Rgba;
-use std::ops::Mul;
+use std::ops::{Mul, Add, AddAssign};
 
 type ColorChannel = f32;
 
@@ -72,6 +72,27 @@ impl Mul<Color> for f32 {
     type Output = Color;
     fn mul(self, other: Color) -> Color {
         other * self
+    }
+}
+
+impl Add for Color {
+    type Output = Self;
+    fn add(self, other: Color) -> Color {
+        return Color {
+            red: self.red + other.red,
+            green: self.green + other.green,
+            blue: self.blue + other.blue
+        };
+    }
+}
+
+impl AddAssign for Color {
+    fn add_assign(&mut self, other: Self) {
+        *self = Self {
+            red: self.red + other.red,
+            green: self.green + other.green,
+            blue: self.blue + other.blue
+        };
     }
 }
 

@@ -2,7 +2,7 @@ use image::{DynamicImage, GenericImage};
 
 use crate::scene::Scene;
 use crate::ray::{Ray, Traceable};
-use crate::color::RgbaColor;
+use crate::color::{Color, RgbaColor};
 
 pub fn render(scene: &Scene) -> DynamicImage {
     let mut image = DynamicImage::new_rgb8(scene.width, scene.height);
@@ -13,21 +13,31 @@ pub fn render(scene: &Scene) -> DynamicImage {
             let trace_result = scene.trace(&ray);
             if let Some(intersection) = trace_result {
                 let hit_point = ray.origin + (ray.direction * intersection.distance);
-                let direction_to_light = -scene.light.direction.normalize();
                 let surface_normal = intersection.element.surface_normal(&hit_point);
+                let material = intersection.element.material();
 
-                let shadow_ray = Ray {
-                    origin: hit_point + (surface_normal * scene.shadow_bias),
-                    direction: direction_to_light
-                };
-                let in_light = scene.trace(&shadow_ray).is_none();
+                let mut color = Color {red: 0.0, green: 0.0, blue: 0.0};
 
-                let light_intensity = if in_light { scene.light.intensity } else { 0.0 };
+                for light in &scene.lights {
+                    let direction_to_light = light.direction(&hit_point);
+    
+                    let shadow_ray = Ray {
+                        origin: hit_point + (surface_normal * scene.shadow_bias),
+                        direction: direction_to_light
+                    };
+                    let shadow_intersection = scene.trace(&shadow_ray);
+                    let in_light = shadow_intersection.is_none()
+                        || shadow_intersection.unwrap().distance > light.distance(&hit_point);
+    
+                    let light_intensity = if in_light { light.intensity(&hit_point) } else { 0.0 };
+                    let light_power = (surface_normal.dot(direction_to_light)).max(0.0) * light_intensity;
 
-                let light_power = (surface_normal.dot(direction_to_light)).max(0.0) * light_intensity;
-                let light_reflected = intersection.element.material().albedo / std::f64::consts::PI;
-                let color = intersection.element.material().color
-                    * scene.light.color * light_power as f32 * light_reflected  as f32;
+                    let light_reflected = material.albedo / std::f64::consts::PI;
+                    let light_color = light.color() * light_power as f32 * light_reflected  as f32;
+
+                    color += light_color * material.color
+
+                }
 
                 image.put_pixel(x, y, color.clamp().to_rgba());
             } else {
