@@ -19,9 +19,13 @@ pub struct Color {
     pub blue: ColorChannel
 }
 
+pub trait RgbaColor {
+    fn to_rgba(&self) -> Rgba<u8>;
+}
 
-impl Color {
-    pub fn to_rgba(&self) -> Rgba<u8> {
+
+impl RgbaColor for Color {
+    fn to_rgba(&self) -> Rgba<u8> {
         Rgba ([
             self.red.to_u8(), 
             self.green.to_u8(),
