@@ -108,7 +108,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn normalized_lenght_one() {
+    fn normalized_length_one() {
         let v = Vector3{x:1.7, y:10.3, z:15.5};
         let normalized = v.normalize();
         let length = normalized.length();

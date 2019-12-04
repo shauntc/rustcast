@@ -1,16 +1,16 @@
-use crate::color::Color;
+use crate::material::Material;
 use crate::point::Point;
-use crate::ray::{Intersect, Ray};
+use crate::ray::{Traceable, Ray};
 use crate::vector::Vector3;
 
 #[derive(Debug)]
 pub struct Sphere {
     pub center: Point,
     pub radius: f64,
-    pub color: Color
+    pub material: Material
 }
 
-impl Intersect for Sphere {
+impl Traceable for Sphere {
     fn intersects(&self, ray: &Ray) -> Option<f64> {
         let l: Vector3 = self.center - ray.origin;
         let r_sq = self.radius * self.radius;
@@ -29,5 +29,9 @@ impl Intersect for Sphere {
         let distance = if i_one < i_two { i_one } else { i_two };
 
         return Some(distance);
+    }
+
+    fn surface_normal(&self, hit_point: &Point) -> Vector3 {
+        return (*hit_point - self.center).normalize();
     }
 }

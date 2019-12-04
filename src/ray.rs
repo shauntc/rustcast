@@ -8,8 +8,9 @@ pub struct Ray {
     pub direction: Vector3
 }
 
-pub trait Intersect {
+pub trait Traceable {
     fn intersects(&self, ray: &Ray) -> Option<f64>;
+    fn surface_normal(&self, hit_point: &Point) -> Vector3;
 }
 
 /// Image Sensor Width
