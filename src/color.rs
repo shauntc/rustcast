@@ -28,20 +28,22 @@ impl Color {
             green: self.green.min(1.0).max(0.0),
         }
     }
-}
 
-pub trait RgbaColor {
-    fn to_rgba(&self) -> Rgba<u8>;
-}
-
-impl RgbaColor for Color {
-    fn to_rgba(&self) -> Rgba<u8> {
-        Rgba ([
+    pub fn to_rgba(&self) -> Rgba<u8> {
+        return Rgba ([
             self.red.to_u8(), 
             self.green.to_u8(),
             self.blue.to_u8(),
             0
-        ])
+        ]);
+    }
+
+    pub fn from_rgba(rgba: Rgba<u8>) -> Color {
+        Color {
+            red: rgba[0] as f32 / 255.0,
+            green: rgba[1] as f32 / 255.0,
+            blue: rgba[2] as f32 / 255.0,
+        }
     }
 }
 

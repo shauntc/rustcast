@@ -1,6 +1,7 @@
 use crate::point::Point;
 use crate::vector::Vector3;
 use crate::scene::Scene;
+use crate::material::TextureCoords;
 
 #[derive(Debug)]
 pub struct Ray {
@@ -11,6 +12,7 @@ pub struct Ray {
 pub trait Traceable {
     fn intersects(&self, ray: &Ray) -> Option<f64>;
     fn surface_normal(&self, hit_point: &Point) -> Vector3;
+    fn texture_coords(&self, hit_point: &Point) -> TextureCoords;
 }
 
 /// Image Sensor Width

@@ -2,7 +2,7 @@ use crate::color::{Color};
 use crate::ray::{Ray, Traceable};
 use crate::vector::Vector3;
 use crate::point::Point;
-use crate::material::Material;
+use crate::material::{Material, TextureCoords};
 
 pub mod sphere;
 pub mod plane;
@@ -21,10 +21,10 @@ pub enum Element {
 }
 
 impl Element {
-    pub fn material(&self) -> Material {
+    pub fn material(&self) -> &Material {
         match self {
-            Element::Sphere(ref s) => s.material,
-            Element::Plane(ref p) => p.material
+            Element::Sphere(ref s) => &s.material,
+            Element::Plane(ref p) => &p.material
         }
     }
 
@@ -41,6 +41,12 @@ impl Traceable for Element {
         match self {
             Element::Sphere(ref s) => s.surface_normal(hit_point),
             Element::Plane(ref p) => p.surface_normal(hit_point)
+        }
+    }
+    fn texture_coords(&self, hit_point: &Point) -> TextureCoords {
+        match self {
+            Element::Sphere(ref s) => s.texture_coords(hit_point),
+            Element::Plane(ref p) => p.texture_coords(hit_point)
         }
     }
 }
@@ -77,6 +83,7 @@ impl Scene {
 pub mod tests {
     use super::*;
     use super::light::DirectionalLight;
+    use crate::material::Coloration;
 
     pub fn test_scene() -> Scene {
         return Scene {
@@ -88,7 +95,7 @@ pub mod tests {
                     center: Point { x: 0.0, y: 0.0, z: -5.0},
                     radius: 1.0,
                     material: Material {
-                        color: Color {red: 0.4, green: 1.0, blue: 0.4},
+                        color: Coloration::Color(Color {red: 0.4, green: 1.0, blue: 0.4}),
                         albedo: 0.18
                     }
                 })

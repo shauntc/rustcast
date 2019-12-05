@@ -1,7 +1,9 @@
-use crate::material::Material;
+use crate::material::{Material, TextureCoords};
 use crate::point::Point;
 use crate::ray::{Traceable, Ray};
 use crate::vector::Vector3;
+
+use std::f64::consts::PI;
 
 #[derive(Debug)]
 pub struct Sphere {
@@ -33,5 +35,13 @@ impl Traceable for Sphere {
 
     fn surface_normal(&self, hit_point: &Point) -> Vector3 {
         return (*hit_point - self.center).normalize();
+    }
+
+    fn texture_coords(&self, hit_point: &Point) -> TextureCoords {
+        let hit_vec = *hit_point - self.center;
+        return TextureCoords {
+            x: (1.0 + hit_vec.z.atan2(hit_vec.x) / PI) * 0.5,
+            y: (hit_vec.y / self.radius).acos() / PI
+        }
     }
 }

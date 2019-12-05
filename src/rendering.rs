@@ -2,7 +2,7 @@ use image::{DynamicImage, GenericImage};
 
 use crate::scene::Scene;
 use crate::ray::{Ray, Traceable};
-use crate::color::{Color, RgbaColor};
+use crate::color::{Color};
 
 pub fn render(scene: &Scene) -> DynamicImage {
     let mut image = DynamicImage::new_rgb8(scene.width, scene.height);
@@ -14,7 +14,8 @@ pub fn render(scene: &Scene) -> DynamicImage {
             if let Some(intersection) = trace_result {
                 let hit_point = ray.origin + (ray.direction * intersection.distance);
                 let surface_normal = intersection.element.surface_normal(&hit_point);
-                let material = intersection.element.material();
+                let element = intersection.element;
+                let material = element.material();
 
                 let mut color = Color {red: 0.0, green: 0.0, blue: 0.0};
 
@@ -35,8 +36,9 @@ pub fn render(scene: &Scene) -> DynamicImage {
                     let light_reflected = material.albedo / std::f64::consts::PI;
                     let light_color = light.color() * light_power as f32 * light_reflected  as f32;
 
-                    color += light_color * material.color
+                    let texture_coords = element.texture_coords(&hit_point);
 
+                    color += light_color * material.color.color(&texture_coords);
                 }
 
                 image.put_pixel(x, y, color.clamp().to_rgba());
