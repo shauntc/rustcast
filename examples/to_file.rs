@@ -1,23 +1,8 @@
-mod scene;
-mod rendering;
-mod point;
-mod vector;
-mod ray;
-mod color;
-mod material;
-
-use rendering::{render};
-use point::Point;
-use scene::{Scene, Element};
-use scene::sphere::Sphere;
-use scene::light::{Light, DirectionalLight, SphericalLight};
-use material::{Material, Coloration};
-use vector::Vector3;
-use scene::plane::Plane;
+use rustcast::render_scene;
+use rustcast::math::*;
+use rustcast::scene::*;
+use rustcast::raycast::*;
 use std::path::Path;
-use color::Color;
-
-use image;
 
 fn main() {
     let tex_path = Path::new("./assets/textures/grid.png");
@@ -25,9 +10,12 @@ fn main() {
 
     if let Ok(texture) = texture_res {
         let scene = Scene {
-            width: 800,
-            height: 600,
-            fov: 90.0,
+            sensor: Sensor {
+                width: 800,
+                height: 600,
+                fov: 90.0,
+                shadow_bias: 1e-12,
+            },
             elements: vec![
                 Element::Plane(Plane {
                     origin: Point {x: 0.0, y:-2.0, z: 0.0},
@@ -65,7 +53,6 @@ fn main() {
                 }),
             ],
             clear_color: Color {red: 0.0, green: 0.0, blue: 0.0},
-            shadow_bias: 1e-12,
             lights: vec![
                 Light::Directional(DirectionalLight {
                     direction: Vector3 {x: -1.0, y:-1.0, z: -1.5},
@@ -80,7 +67,7 @@ fn main() {
             ]
         };
     
-        let img = render(&scene);
+        let img = render_scene(&scene);
         let path = Path::new("./test.png"); // TODO: Change .gitignore when this is removed
         if img.save(path).is_ok() {
             println!("Image Saved to {:?}", path);

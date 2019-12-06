@@ -1,6 +1,5 @@
-use crate::color::Color;
-use crate::vector::Vector3;
-use crate::point::Point;
+use crate::scene::Color;
+use crate::math::{Vector3, Point};
 
 #[derive(Debug)]
 pub struct DirectionalLight {

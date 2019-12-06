@@ -1,4 +1,5 @@
-use crate::color::Color;
+use crate::scene::Color;
+use crate::raycast::TextureCoords;
 use image::{DynamicImage, GenericImageView};
 use std::fmt::Debug;
 use std::fmt;
@@ -46,10 +47,4 @@ impl Coloration {
 pub struct Material {
     pub color: Coloration,
     pub albedo: f64
-}
-
-#[derive(Debug)]
-pub struct TextureCoords {
-    pub x: f64,
-    pub y: f64
 }

@@ -1,14 +1,13 @@
 use image::{DynamicImage, GenericImage};
 
-use crate::scene::Scene;
-use crate::ray::{Ray, Traceable};
-use crate::color::{Color};
+use crate::scene::{Scene, Color};
+use crate::raycast::{Ray, Intersectable};
 
-pub fn render(scene: &Scene) -> DynamicImage {
-    let mut image = DynamicImage::new_rgb8(scene.width, scene.height);
-    for x in 0..scene.width {
-        for y in 0..scene.height {
-            let ray = Ray::create_prime(x, y, scene);
+pub fn render_scene(scene: &Scene) -> DynamicImage {
+    let mut image = DynamicImage::new_rgb8(scene.sensor.width, scene.sensor.height);
+    for x in 0..scene.sensor.width {
+        for y in 0..scene.sensor.height {
+            let ray = Ray::create_prime(x, y, &scene.sensor);
 
             let trace_result = scene.trace(&ray);
             if let Some(intersection) = trace_result {
@@ -23,7 +22,7 @@ pub fn render(scene: &Scene) -> DynamicImage {
                     let direction_to_light = light.direction(&hit_point);
     
                     let shadow_ray = Ray {
-                        origin: hit_point + (surface_normal * scene.shadow_bias),
+                        origin: hit_point + (surface_normal * scene.sensor.shadow_bias),
                         direction: direction_to_light
                     };
                     let shadow_intersection = scene.trace(&shadow_ray);
@@ -61,8 +60,8 @@ mod tests {
     #[test]
     fn test_can_render_scene() {
         let scene = test_scene();
-        let img: DynamicImage = render(&scene);
-        assert_eq!(scene.width, img.width());
-        assert_eq!(scene.height, img.height());
+        let img: DynamicImage = render_scene(&scene);
+        assert_eq!(scene.sensor.width, img.width());
+        assert_eq!(scene.sensor.height, img.height());
     }
 }

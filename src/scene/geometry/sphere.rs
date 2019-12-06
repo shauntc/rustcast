@@ -1,7 +1,6 @@
-use crate::material::{Material, TextureCoords};
-use crate::point::Point;
-use crate::ray::{Traceable, Ray};
-use crate::vector::Vector3;
+use crate::math::{Vector3, Point};
+use crate::raycast::{Intersectable, Ray, TextureCoords};
+use crate::scene::Material;
 
 use std::f64::consts::PI;
 
@@ -12,7 +11,7 @@ pub struct Sphere {
     pub material: Material
 }
 
-impl Traceable for Sphere {
+impl Intersectable for Sphere {
     fn intersects(&self, ray: &Ray) -> Option<f64> {
         let l: Vector3 = self.center - ray.origin;
         let r_sq = self.radius * self.radius;

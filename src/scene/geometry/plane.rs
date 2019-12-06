@@ -1,7 +1,6 @@
-use crate::material::{Material, TextureCoords};
-use crate::point::Point;
-use crate::vector::Vector3;
-use crate::ray::{Traceable, Ray};
+use crate::math::{Vector3, Point};
+use crate::raycast::{Intersectable, Ray, TextureCoords};
+use crate::scene::{Material};
 
 #[derive(Debug)]
 pub struct Plane {
@@ -10,7 +9,7 @@ pub struct Plane {
     pub material: Material
 }
 
-impl Traceable for Plane {
+impl Intersectable for Plane {
     fn intersects(&self, ray: &Ray) -> Option<f64> {
         let normal = self.normal;
         let denom = normal.dot(ray.direction);
