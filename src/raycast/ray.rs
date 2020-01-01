@@ -38,4 +38,13 @@ impl Ray {
             }).normalize()
         }
     }
+
+    pub fn create_reflected(normal: Vector3, incident: Vector3, intersection: Point, sensor: &Sensor) -> Ray {
+        return Ray {
+            /* origin is adjusted away from the sphere by the shadow bias distance */
+            origin: intersection + (sensor.shadow_bias * normal),
+            // TODO: Explain
+            direction: (incident - (2.0 * incident.dot(normal) * normal)).normalize()
+        }
+    }
 }

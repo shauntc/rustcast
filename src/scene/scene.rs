@@ -31,7 +31,7 @@ impl Scene {
 #[cfg(test)]
 pub mod tests {
     use super::*;
-    use crate::scene::{DirectionalLight, Sphere, Coloration, Material};
+    use crate::scene::*;
     use crate::math::{Vector3, Point};
 
     pub fn test_scene() -> Scene {
@@ -41,6 +41,7 @@ pub mod tests {
                 height: 600,
                 fov: 90.0,
                 shadow_bias: 1e-12,
+                max_recursion_depth: 4
             },
             elements: vec![
                 Element::Sphere (Sphere {
@@ -48,7 +49,8 @@ pub mod tests {
                     radius: 1.0,
                     material: Material {
                         color: Coloration::Color(Color {red: 0.4, green: 1.0, blue: 0.4}),
-                        albedo: 0.18
+                        albedo: 0.18,
+                        surface: SurfaceType::Diffuse
                     }
                 })
             ],

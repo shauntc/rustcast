@@ -1,6 +1,6 @@
 pub mod scene;
 pub mod raycast;
 pub mod math;
-pub mod render;
+pub mod rendering;
 
-pub use render::render_scene;
+pub use rendering::render_scene;
