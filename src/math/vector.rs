@@ -103,6 +103,19 @@ impl Clone for Vector3 {
 }
 
 
+#[derive(Debug, Default, Copy)]
+pub struct Vector2 {
+    pub x: f64,
+    pub y: f64
+}
+
+impl Clone for Vector2 {
+    fn clone(&self) -> Self {
+        Vector2 {x: self.x, y: self.y}
+    }
+}
+
+
 #[cfg(test)]
 mod tests {
     use super::*;

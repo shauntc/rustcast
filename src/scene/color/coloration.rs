@@ -1,8 +1,24 @@
-use crate::scene::Color;
-use crate::raycast::TextureCoords;
-use image::{DynamicImage, GenericImageView};
-use std::fmt::Debug;
+use image::{DynamicImage, GenericImageView, ColorType};
 use std::fmt;
+use std::fmt::Debug;
+
+use crate::math::Vector2;
+
+use super::color::*;
+
+pub trait Texture {
+    fn point_color(&self, coordinates: Vector2) -> Color;
+}
+
+impl Texture for DynamicImage {
+    fn point_color(&self, coordinates: Vector2) -> Color {
+        let x = wrap(coordinates.x as f32, self.width());
+        let y = wrap(coordinates.y as f32, self.height());
+        
+        assert!(self.color().channel_count() >= 2, "Too few color channels");
+        return Color::from_rgba(self.get_pixel(x, y))
+    }
+}
 
 pub enum Coloration {
     Color(Color),
@@ -30,28 +46,10 @@ impl Debug for Coloration {
 }
 
 impl Coloration {
-    pub fn color(&self, texture_coords: &TextureCoords) -> Color {
+    pub fn color(&self, texture_coords: Vector2) -> Color {
         match self {
             Coloration::Color(c) => *c,
-            Coloration::Texture(t) => {
-                let x = wrap(texture_coords.x as f32, t.width());
-                let y = wrap(texture_coords.y as f32, t.height());
-                
-                return Color::from_rgba(t.get_pixel(x, y))
-            }
+            Coloration::Texture(t) => t.point_color(texture_coords)
         }
     }
-}
-
-#[derive(Debug)]
-pub enum SurfaceType {
-    Diffuse,
-    Reflective { reflectivity: f64 }
-}
-
-#[derive(Debug)]
-pub struct Material {
-    pub color: Coloration,
-    pub albedo: f64,
-    pub surface: SurfaceType
 }

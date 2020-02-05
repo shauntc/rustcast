@@ -1,5 +1,5 @@
-use crate::math::{Vector3, Point};
-use crate::raycast::{Intersectable, Ray, TextureCoords};
+use crate::math::{Vector3, Point, Vector2};
+use crate::raycast::{Intersectable, Ray};
 use crate::scene::Material;
 
 use std::f64::consts::PI;
@@ -36,9 +36,9 @@ impl Intersectable for Sphere {
         return (*hit_point - self.center).normalize();
     }
 
-    fn texture_coords(&self, hit_point: &Point) -> TextureCoords {
+    fn texture_coords(&self, hit_point: &Point) -> Vector2 {
         let hit_vec = *hit_point - self.center;
-        return TextureCoords {
+        return Vector2 {
             x: (1.0 + hit_vec.z.atan2(hit_vec.x) / PI) * 0.5,
             y: (hit_vec.y / self.radius).acos() / PI
         }

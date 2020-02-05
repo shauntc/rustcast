@@ -1,5 +1,5 @@
-use crate::math::{Vector3, Point};
-use crate::raycast::{Intersectable, Ray, TextureCoords};
+use crate::math::{Vector3, Point, Vector2};
+use crate::raycast::{Intersectable, Ray};
 use crate::scene::{Material};
 
 #[derive(Debug)]
@@ -28,7 +28,7 @@ impl Intersectable for Plane {
         return -self.normal;
     }
 
-    fn texture_coords(&self, hit_point: &Point) -> TextureCoords {
+    fn texture_coords(&self, hit_point: &Point) -> Vector2 {
         let mut x_axis = self.normal.cross(&Vector3::zero());
         if x_axis.length() == 0.0 {
             x_axis = self.normal.cross(&Vector3 {x:0.0, y:1.0, z:0.0});
@@ -37,7 +37,7 @@ impl Intersectable for Plane {
 
         let hit_vec = *hit_point -  self.origin;
         
-        return TextureCoords {
+        return Vector2 {
             x: hit_vec.dot(x_axis),
             y: hit_vec.dot(y_axis)
         }

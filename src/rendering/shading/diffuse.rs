@@ -25,7 +25,7 @@ pub fn shade_diffuse(scene: &Scene, element: &Element, hit_point: Point, surface
 
         let texture_coords = element.texture_coords(&hit_point);
 
-        color += light_color * material.color.color(&texture_coords);
+        color += light_color * material.color.color(texture_coords);
     }
     
     return color;
