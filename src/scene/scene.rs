@@ -50,7 +50,8 @@ pub mod tests {
                     material: Material {
                         color: Coloration::Color(Color {red: 0.4, green: 1.0, blue: 0.4}),
                         albedo: 0.18,
-                        surface: SurfaceType::Diffuse
+                        surface: SurfaceType::Diffuse,
+                        normal: SurfaceNormal::Geometry
                     }
                 })
             ],

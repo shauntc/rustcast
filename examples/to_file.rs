@@ -19,7 +19,8 @@ fn main() {
                 material: Material {
                     color: Coloration::Color(Color {red: 0.2, green: 0.01, blue: 0.8}),
                     albedo: 0.12,
-                    surface: SurfaceType::Diffuse
+                    surface: SurfaceType::Diffuse,
+                    normal: SurfaceNormal::Geometry
                 }
             }), 
             Element::Sphere(Sphere {
@@ -28,7 +29,8 @@ fn main() {
                 material: Material {
                     color: Coloration::Texture(load_texture("assets/materials/planks/tbykeacs_2K_Albedo.jpg")),
                     albedo: 0.04,
-                    surface: SurfaceType::Diffuse
+                    surface: SurfaceType::Diffuse,
+                    normal: SurfaceNormal::Geometry
                 }
             }),
             Element::Sphere(Sphere {
@@ -37,7 +39,8 @@ fn main() {
                 material: Material {
                     color: Coloration::Texture(load_texture("assets/materials/rock/smokagcp_2K_Albedo.jpg")),
                     albedo: 0.05,
-                    surface: SurfaceType::Diffuse
+                    surface: SurfaceType::Diffuse,
+                    normal: SurfaceNormal::Geometry
                 }
             }),
             Element::Sphere(Sphere {
@@ -46,7 +49,8 @@ fn main() {
                 material: Material {
                     color: Coloration::Texture(load_texture("assets/materials/metal/se2abbvc_2K_Albedo.jpg")),
                     albedo: 0.20,
-                    surface: SurfaceType::Reflective { reflectivity: 0.75 }
+                    surface: SurfaceType::Reflective { reflectivity: 0.75 },
+                    normal: SurfaceNormal::Geometry
                 }
             }),
             Element::Sphere(Sphere {
@@ -55,7 +59,8 @@ fn main() {
                 material: Material {
                     color: Coloration::Color(Color {red: 1.0, green: 1.0, blue: 1.0}),
                     albedo: 0.20,
-                    surface: SurfaceType::Reflective { reflectivity: 1.0 }
+                    surface: SurfaceType::Reflective { reflectivity: 1.0 },
+                    normal: SurfaceNormal::Geometry
                 }
             }),
         ],
