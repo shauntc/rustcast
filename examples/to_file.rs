@@ -6,8 +6,8 @@ use std::path::Path;
 fn main() {
     let scene = Scene {
         sensor: Sensor {
-            width: 800,
-            height: 600,
+            width: 1600,
+            height: 1200,
             fov: 90.0,
             shadow_bias: 1e-12,
             max_recursion_depth: 4
@@ -80,7 +80,7 @@ fn main() {
     };
 
     let img = render_scene(&scene);
-    let path = Path::new("./test.png"); // TODO: Change .gitignore when this is removed
+    let path = Path::new("./example_output.png");
     if img.save(path).is_ok() {
         println!("Image Saved to {:?}", path);
     } else {
